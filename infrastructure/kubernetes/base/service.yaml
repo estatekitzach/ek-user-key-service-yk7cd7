@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: Service
+
+metadata:
+  name: estatekit-api
+  labels:
+    app.kubernetes.io/name: estatekit-api
+    app.kubernetes.io/part-of: estatekit
+    app.kubernetes.io/component: api
+    app.kubernetes.io/managed-by: kustomize
+  annotations:
+    # Enable Prometheus metrics scraping
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "80"
+    prometheus.io/path: "/metrics"
+
+spec:
+  # Use ClusterIP for internal-only networking
+  type: ClusterIP
+  
+  # Port configuration for HTTP traffic
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
+      protocol: TCP
+  
+  # Pod selector using deployment labels
+  selector:
+    app: estatekit-api
+  
+  # Disable session affinity for better load distribution
+  sessionAffinity: None
+  
+  # Only route traffic to ready pods
+  publishNotReadyAddresses: false
