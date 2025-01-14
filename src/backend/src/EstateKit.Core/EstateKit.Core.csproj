@@ -1,0 +1,78 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <!-- Core Settings -->
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>12.0</LangVersion>
+    
+    <!-- Build Configuration -->
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    
+    <!-- Assembly Signing -->
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>EstateKit.snk</AssemblyOriginatorKeyFile>
+    
+    <!-- Assembly Information -->
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
+    <Version>1.0.0</Version>
+    <Company>EstateKit</Company>
+    <Product>EstateKit Personal Information API</Product>
+    <Description>Core library for EstateKit Personal Information encryption services</Description>
+    <Copyright>© 2024 EstateKit. All rights reserved.</Copyright>
+  </PropertyGroup>
+
+  <!-- Package References -->
+  <ItemGroup>
+    <!-- AWS SDK for KMS Integration - v3.0.0 -->
+    <PackageReference Include="AWSSDK.KMS" Version="3.0.0" />
+    
+    <!-- Microsoft Extensions - v9.0.0 -->
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.0" />
+    
+    <!-- System Libraries - v9.0.0 -->
+    <PackageReference Include="System.Threading.Tasks" Version="9.0.0" />
+  </ItemGroup>
+
+  <!-- Interface Definitions -->
+  <ItemGroup>
+    <Compile Include="Interfaces/IEncryptionService.cs" />
+    <Compile Include="Interfaces/IKeyManagementService.cs" />
+    <Compile Include="Interfaces/ICacheService.cs" />
+    <Compile Include="Interfaces/IKeyRotationService.cs" />
+    <Compile Include="Interfaces/IUserKeyRepository.cs" />
+  </ItemGroup>
+
+  <!-- Domain Entities -->
+  <ItemGroup>
+    <Compile Include="Entities/UserKey.cs" />
+    <Compile Include="Entities/UserKeyHistory.cs" />
+  </ItemGroup>
+
+  <!-- Custom Exceptions -->
+  <ItemGroup>
+    <Compile Include="Exceptions/KeyNotFoundException.cs" />
+    <Compile Include="Exceptions/KeyRotationInProgressException.cs" />
+    <Compile Include="Exceptions/EncryptionException.cs" />
+    <Compile Include="Exceptions/InvalidKeyException.cs" />
+  </ItemGroup>
+
+  <!-- Configuration Classes -->
+  <ItemGroup>
+    <Compile Include="Configuration/AwsConfiguration.cs" />
+    <Compile Include="Configuration/CacheConfiguration.cs" />
+    <Compile Include="Configuration/DatabaseConfiguration.cs" />
+    <Compile Include="Configuration/KeyRotationConfiguration.cs" />
+  </ItemGroup>
+
+  <!-- Constants -->
+  <ItemGroup>
+    <Compile Include="Constants/ErrorCodes.cs" />
+  </ItemGroup>
+
+</Project>
