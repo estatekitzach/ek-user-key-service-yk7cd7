@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: estatekit-api
+  labels:
+    # Core application labels
+    app.kubernetes.io/name: estatekit-api
+    app.kubernetes.io/part-of: estatekit
+    app.kubernetes.io/managed-by: kustomize
+    
+    # Security and networking labels
+    istio-injection: enabled
+    pod-security.kubernetes.io/enforce: restricted
+    network-policy: enabled
+    
+    # Observability label
+    monitoring: enabled
+    
+  annotations:
+    # Namespace description and purpose
+    kubernetes.io/description: "Namespace for EstateKit Personal Information API resources"
+    
+    # Security and compliance annotations
+    security.estatekit.com/compliance-level: high
+    
+    # Backup configuration
+    backup.velero.io/include-namespaces: "true"
+    
+    # Prometheus monitoring configuration
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "9090"
