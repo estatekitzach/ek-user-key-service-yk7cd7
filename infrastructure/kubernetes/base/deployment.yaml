@@ -1,0 +1,91 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: estatekit-api
+  labels:
+    app: estatekit-api
+    component: api
+spec:
+  # High availability with 3 replicas to handle 1000+ concurrent requests
+  replicas: 3
+  selector:
+    matchLabels:
+      app: estatekit-api
+  # Zero-downtime updates with rolling deployment strategy
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: estatekit-api
+        component: api
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "80"
+        prometheus.io/path: "/metrics"
+    spec:
+      # AWS service authentication via IAM roles
+      serviceAccountName: estatekit-api-sa
+      # Pod-level security context
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        fsGroup: 2000
+      containers:
+        - name: estatekit-api
+          image: ${DOCKER_REGISTRY}/estatekit-api:${IMAGE_TAG}
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+              protocol: TCP
+          # Resource limits and requests for optimal performance
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "512Mi"
+            limits:
+              cpu: "2"
+              memory: "4Gi"
+          # Configuration and secrets mounting
+          envFrom:
+            - configMapRef:
+                name: estatekit-api-config
+            - secretRef:
+                name: estatekit-api-secrets
+          # Health checks for container lifecycle management
+          livenessProbe:
+            httpGet:
+              path: /health/live
+              port: 80
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /health/ready
+              port: 80
+            initialDelaySeconds: 15
+            periodSeconds: 5
+            timeoutSeconds: 3
+          # Container-level security context
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+      # Grace period for pod termination
+      terminationGracePeriodSeconds: 30
+      # Pod anti-affinity for high availability
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app: estatekit-api
+                topologyKey: kubernetes.io/hostname
