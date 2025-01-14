@@ -1,0 +1,120 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <!-- Core Settings -->
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>12.0</LangVersion>
+    <AssemblyName>EstateKit.Api</AssemblyName>
+    <RootNamespace>EstateKit.Api</RootNamespace>
+    
+    <!-- Documentation -->
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    
+    <!-- Code Analysis -->
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <AnalysisLevel>latest</AnalysisLevel>
+    <AnalysisMode>All</AnalysisMode>
+    <Features>strict</Features>
+    
+    <!-- Assembly Signing -->
+    <SignAssembly>true</SignAssembly>
+    <DelaySign>false</DelaySign>
+    <PublicSign>true</PublicSign>
+    
+    <!-- Source Link -->
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+    <DeterministicSourcePaths>true</DeterministicSourcePaths>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+
+    <!-- Assembly Information -->
+    <Version>1.0.0</Version>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
+    <Company>EstateKit</Company>
+    <Product>EstateKit Personal Information API</Product>
+    <Description>REST API service for secure personal information encryption using AWS KMS</Description>
+    <Copyright>© 2024 EstateKit. All rights reserved.</Copyright>
+  </PropertyGroup>
+
+  <!-- Debug Configuration -->
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>portable</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <Optimize>false</Optimize>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+  </PropertyGroup>
+
+  <!-- Release Configuration -->
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+    <Optimize>true</Optimize>
+    <DefineConstants>TRACE;RELEASE</DefineConstants>
+  </PropertyGroup>
+
+  <!-- Project References -->
+  <ItemGroup>
+    <ProjectReference Include="..\EstateKit.Core\EstateKit.Core.csproj" />
+    <ProjectReference Include="..\EstateKit.Infrastructure\EstateKit.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <!-- Package References -->
+  <ItemGroup>
+    <!-- ASP.NET Core - v9.0.0 -->
+    <PackageReference Include="Microsoft.AspNetCore.App" Version="9.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.0" />
+    
+    <!-- API Documentation - v6.5.0 -->
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+    
+    <!-- AWS Integration - v3.7.0 -->
+    <PackageReference Include="AWSSDK.CognitoIdentityProvider" Version="3.7.0" />
+    
+    <!-- Logging - v8.0.0 -->
+    <PackageReference Include="Serilog.AspNetCore" Version="8.0.0" />
+    
+    <!-- Validation - v11.3.0 -->
+    <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
+    
+    <!-- Monitoring - v2.22.0 -->
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.22.0" />
+    
+    <!-- Code Analysis - v8.0.0 -->
+    <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="8.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+    
+    <!-- Security Scanning - v5.6.7 -->
+    <PackageReference Include="SecurityCodeScan.VS2019" Version="5.6.7">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <!-- API Controllers -->
+  <ItemGroup>
+    <Compile Include="Controllers\V1\DecryptController.cs" />
+    <Compile Include="Controllers\V1\EncryptController.cs" />
+    <Compile Include="Controllers\V1\KeyController.cs" />
+    <Compile Include="Controllers\V1\RotateController.cs" />
+  </ItemGroup>
+
+  <!-- Data Transfer Objects -->
+  <ItemGroup>
+    <Compile Include="DTOs\DecryptRequestDto.cs" />
+    <Compile Include="DTOs\DecryptResponseDto.cs" />
+    <Compile Include="DTOs\EncryptRequestDto.cs" />
+    <Compile Include="DTOs\EncryptResponseDto.cs" />
+    <Compile Include="DTOs\KeyGenerationRequestDto.cs" />
+    <Compile Include="DTOs\KeyGenerationResponseDto.cs" />
+    <Compile Include="DTOs\RotateKeyRequestDto.cs" />
+    <Compile Include="DTOs\RotateKeyResponseDto.cs" />
+  </ItemGroup>
+
+</Project>
