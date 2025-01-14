@@ -1,0 +1,36 @@
+# Format: path_pattern team_or_username
+# The last matching pattern takes precedence
+
+# Default owners for everything in the repo
+# These owners will be the default owners for everything in the repository
+* @estatekit/lead-architects
+
+# Security-sensitive AWS KMS integration requiring security team review
+# Requires 2 security team reviews
+src/backend/src/EstateKit.Infrastructure/Services/AwsKmsService.cs @estatekit/security-team
+
+# Security-sensitive configuration files requiring dual team review
+# Requires 2 reviews from security and core teams
+src/backend/src/EstateKit.Core/Configuration/ @estatekit/security-team @estatekit/core-team
+
+# AWS service implementations requiring infrastructure and security review
+# Requires 2 reviews from infrastructure and security teams
+src/backend/src/EstateKit.Infrastructure/Services/ @estatekit/infrastructure-team @estatekit/security-team
+
+# Core domain logic and interfaces
+src/backend/src/EstateKit.Core/ @estatekit/core-team
+
+# Infrastructure implementations
+src/backend/src/EstateKit.Infrastructure/ @estatekit/infrastructure-team
+
+# API endpoints and controllers
+src/backend/src/EstateKit.Api/ @estatekit/api-team
+
+# Test suites and testing infrastructure
+src/backend/test/ @estatekit/qa-team
+
+# Infrastructure as Code and Kubernetes configurations
+infrastructure/ @estatekit/devops-team
+
+# CI/CD workflow configurations
+.github/workflows/ @estatekit/devops-team
