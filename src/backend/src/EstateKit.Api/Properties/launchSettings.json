@@ -1,0 +1,51 @@
+{
+  "profiles": {
+    "EstateKit.Api": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "applicationUrl": "https://localhost:5001;http://localhost:5000",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "AWS__Region": "us-east-1",
+        "AWS__UseIamRole": "false",
+        "AWS__KmsKeyId": "dev-kms-key-id",
+        "Database__ConnectionString": "Host=localhost;Database=estatekit;Username=dev;Password=dev_password;",
+        "Cache__ConnectionString": "localhost:6379",
+        "KeyRotation__EnableAutomaticRotation": "false"
+      }
+    },
+    "EstateKit.Api.Docker": {
+      "commandName": "Docker",
+      "launchBrowser": true,
+      "applicationUrl": "https://localhost:5001;http://localhost:5000",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_URLS": "https://+:5001;http://+:5000",
+        "AWS__Region": "us-east-1",
+        "AWS__UseIamRole": "true",
+        "Database__ConnectionString": "Host=postgres;Database=estatekit;Username=dev;Password=dev_password;",
+        "Cache__ConnectionString": "redis:6379"
+      }
+    },
+    "EstateKit.Api.Production": {
+      "commandName": "Project",
+      "launchBrowser": false,
+      "applicationUrl": "https://localhost:5001",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Production",
+        "ASPNETCORE_URLS": "https://+:5001",
+        "AWS__UseIamRole": "true",
+        "Database__EnableSSL": "true",
+        "Cache__EnableCompression": "true"
+      }
+    }
+  },
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "https://localhost:44301",
+      "sslPort": 44301
+    }
+  }
+}
