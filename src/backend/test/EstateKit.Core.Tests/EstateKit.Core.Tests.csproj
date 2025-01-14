@@ -1,0 +1,74 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <!-- Core Settings -->
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>12.0</LangVersion>
+    <IsPackable>false</IsPackable>
+
+    <!-- Build Configuration -->
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    
+    <!-- Test Configuration -->
+    <CollectCoverage>true</CollectCoverage>
+    <CoverletOutputFormat>cobertura</CoverletOutputFormat>
+    <MinimumCoverageThreshold>80</MinimumCoverageThreshold>
+    <MaxParallelThreads>4</MaxParallelThreads>
+    <TestTimeout>30000</TestTimeout>
+  </PropertyGroup>
+
+  <!-- Package References -->
+  <ItemGroup>
+    <!-- Testing Framework - v2.6.2 -->
+    <PackageReference Include="xunit" Version="2.6.2" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.5.4">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    
+    <!-- Test SDK and Coverage - v17.8.0 -->
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
+    <PackageReference Include="coverlet.collector" Version="6.0.0">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    
+    <!-- Testing Tools - v4.20.70 -->
+    <PackageReference Include="Moq" Version="4.20.70" />
+    <PackageReference Include="FluentAssertions" Version="6.12.0" />
+    
+    <!-- Performance Testing - v0.13.10 -->
+    <PackageReference Include="BenchmarkDotNet" Version="0.13.10" />
+    
+    <!-- AWS SDK for Mocking - v3.7.300.15 -->
+    <PackageReference Include="AWSSDK.KeyManagementService" Version="3.7.300.15" />
+  </ItemGroup>
+
+  <!-- Project References -->
+  <ItemGroup>
+    <ProjectReference Include="../../../src/EstateKit.Core/EstateKit.Core.csproj" />
+  </ItemGroup>
+
+  <!-- Test Files Organization -->
+  <ItemGroup>
+    <Compile Include="Services/EncryptionServiceTests.cs" />
+    <Compile Include="Services/KeyRotationServiceTests.cs" />
+    <Compile Include="Services/SecurityComplianceTests.cs" />
+  </ItemGroup>
+
+  <!-- Performance Benchmark Files -->
+  <ItemGroup>
+    <Compile Include="Benchmarks/EncryptionBenchmarks.cs" />
+    <Compile Include="Benchmarks/KeyRotationBenchmarks.cs" />
+  </ItemGroup>
+
+  <!-- Test Run Settings -->
+  <ItemGroup>
+    <None Update="xunit.runner.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>
