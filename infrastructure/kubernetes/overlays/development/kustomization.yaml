@@ -1,0 +1,44 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+# Development environment namespace
+namespace: estatekit-api-dev
+
+# Add dev- prefix to all resources
+namePrefix: dev-
+
+# Common labels for all resources
+commonLabels:
+  environment: development
+  app.kubernetes.io/environment: development
+  app.kubernetes.io/part-of: estatekit-api
+  monitoring.estatekit.com/enabled: "true"
+  debug.estatekit.com/enabled: "true"
+
+# Common annotations for all resources
+commonAnnotations:
+  environment.estatekit.com/name: development
+  environment.estatekit.com/type: non-production
+  monitoring.estatekit.com/scrape: "true"
+  monitoring.estatekit.com/port: "8080"
+  deployment.kubernetes.io/revision: "1"
+
+# Reference base resources
+resources:
+  - ../../base
+
+# Strategic merge patches for development environment
+patchesStrategicMerge:
+  - configmap.yaml
+  - resources-patch.yaml
+
+# Development image configuration
+images:
+  - name: estatekit-api
+    newName: DOCKER_REGISTRY/estatekit-api
+    newTag: dev
+
+# Development replica count
+replicas:
+  - name: estatekit-api
+    count: 2
