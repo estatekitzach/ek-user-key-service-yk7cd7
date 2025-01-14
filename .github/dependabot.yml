@@ -1,0 +1,76 @@
+version: 2
+updates:
+  # NuGet package updates configuration
+  - package-ecosystem: "nuget"
+    directory: "/src/backend/src/EstateKit.Core"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "UTC"
+    versioning-strategy: "auto"
+    labels:
+      - "dependencies"
+      - "nuget"
+    assignees:
+      - "CODEOWNERS"
+    reviewers:
+      - "CODEOWNERS"
+    commit-message:
+      prefix: "chore(deps)"
+      include: "scope"
+    groups:
+      aws-sdk:
+        patterns:
+          - "AWSSDK.*"
+        update-types:
+          - "major"
+          - "minor"
+          - "patch"
+      microsoft-extensions:
+        patterns:
+          - "Microsoft.Extensions.*"
+        update-types:
+          - "minor"
+          - "patch"
+    ignore:
+      - dependency-name: "Microsoft.NETCore.App"
+        update-types: ["major"]
+
+  # Docker image updates configuration
+  - package-ecosystem: "docker"
+    directory: "/src/backend"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "UTC"
+    labels:
+      - "dependencies"
+      - "docker"
+    assignees:
+      - "CODEOWNERS"
+    reviewers:
+      - "CODEOWNERS"
+    commit-message:
+      prefix: "chore(deps)"
+      include: "scope"
+
+  # GitHub Actions updates configuration
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "UTC"
+    labels:
+      - "dependencies"
+      - "github-actions"
+    assignees:
+      - "CODEOWNERS"
+    reviewers:
+      - "CODEOWNERS"
+    commit-message:
+      prefix: "chore(deps)"
+      include: "scope"
