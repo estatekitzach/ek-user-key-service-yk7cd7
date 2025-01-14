@@ -1,0 +1,77 @@
+EstateKit Personal Information API License
+Version 1.0, 2024
+
+TERMS AND CONDITIONS FOR USE, MODIFICATION, AND DISTRIBUTION
+
+1. DEFINITIONS
+
+"Software" refers to the EstateKit Personal Information API, including all source code, documentation, and associated materials.
+
+"Cryptographic Operations" means all encryption, decryption, and key management functions performed using AWS KMS and HSM modules in compliance with FIPS 140-2.
+
+"Security Standards" refers to FIPS 140-2, GDPR, SOC 2, PCI DSS, and ISO 27001 compliance requirements.
+
+"Enterprise Usage" means deployment in commercial or organizational environments subject to security and compliance requirements.
+
+2. GRANT OF LICENSE
+
+Subject to the terms of this License, you are granted a worldwide, non-exclusive, non-transferable license to use, modify, and distribute the Software in compliance with applicable Security Standards.
+
+3. SECURITY COMPLIANCE REQUIREMENTS
+
+a) FIPS 140-2 Compliance
+- All cryptographic operations must utilize FIPS 140-2 validated modules
+- Key generation and management must be performed via AWS KMS HSM
+- Minimum 2048-bit RSA key length requirement
+
+b) GDPR Compliance
+- Personal data protection through encryption at rest
+- Secure key management for data access
+- Implementation of data subject rights
+
+c) Enterprise Security Standards
+- SOC 2: Maintain access controls and audit logging
+- PCI DSS: Implement required security controls
+- ISO 27001: Follow information security management practices
+
+4. RESTRICTIONS
+
+You may not:
+a) Remove or alter any security controls implemented in the Software
+b) Bypass or disable encryption mechanisms
+c) Export the Software in violation of cryptographic export regulations
+d) Use the Software in ways that violate applicable Security Standards
+
+5. DISTRIBUTION REQUIREMENTS
+
+When distributing the Software, you must:
+a) Include this License
+b) Maintain all security controls and compliance mechanisms
+c) Document any modifications affecting security components
+d) Ensure deployment environments meet security requirements
+
+6. WARRANTY AND SECURITY ASSURANCE
+
+THE SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED. While the Software implements security controls, maintaining compliance with Security Standards in deployment and usage remains the responsibility of the licensee.
+
+7. LIMITATION OF LIABILITY
+
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY ARISING FROM THE USE OR INABILITY TO USE THE SOFTWARE, INCLUDING ANY SECURITY OR COMPLIANCE-RELATED CLAIMS.
+
+8. TERM AND TERMINATION
+
+This License terminates automatically if you fail to comply with its terms, including Security Standards compliance requirements. Upon termination, you must cease all use and distribution of the Software.
+
+9. COMPLIANCE VERIFICATION
+
+Licensors reserve the right to verify compliance with Security Standards and license terms through security audits with reasonable notice.
+
+10. GOVERNING LAW
+
+This License shall be governed by and construed in accordance with the laws applicable to security and data protection regulations in your jurisdiction.
+
+For questions regarding security compliance requirements or enterprise usage, contact:
+security@estatekit.com
+
+Copyright (c) 2024 EstateKit
+All rights reserved.
