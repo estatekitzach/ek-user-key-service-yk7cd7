@@ -1,0 +1,74 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <!-- Core Settings -->
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>12.0</LangVersion>
+    <IsPackable>false</IsPackable>
+    
+    <!-- Build Configuration -->
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    
+    <!-- Test Coverage Settings -->
+    <CollectCoverage>true</CollectCoverage>
+    <CoverletOutputFormat>cobertura</CoverletOutputFormat>
+    <MinimumCoverageThreshold>85</MinimumCoverageThreshold>
+    
+    <!-- Assembly Information -->
+    <AssemblyName>EstateKit.Infrastructure.Tests</AssemblyName>
+    <RootNamespace>EstateKit.Infrastructure.Tests</RootNamespace>
+    <Description>Unit tests for EstateKit Infrastructure implementations including data access, caching, AWS KMS integration, encryption services, and security compliance verification</Description>
+  </PropertyGroup>
+
+  <!-- Project References -->
+  <ItemGroup>
+    <ProjectReference Include="../../../src/EstateKit.Infrastructure/EstateKit.Infrastructure.csproj" />
+    <ProjectReference Include="../../../src/EstateKit.Core/EstateKit.Core.csproj" />
+  </ItemGroup>
+
+  <!-- Package References -->
+  <ItemGroup>
+    <!-- Testing Framework - v2.6.2 -->
+    <PackageReference Include="xunit" Version="2.6.2" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.5.4">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    
+    <!-- Test SDK and Tools - v17.8.0 -->
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
+    <PackageReference Include="coverlet.collector" Version="6.0.0">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    
+    <!-- Testing Utilities - v4.20.70 -->
+    <PackageReference Include="Moq" Version="4.20.70" />
+    <PackageReference Include="FluentAssertions" Version="6.12.0" />
+    
+    <!-- AWS Testing - v3.0.0 -->
+    <PackageReference Include="AWSSDK.KMS.Mock" Version="3.0.0" />
+    
+    <!-- Performance Testing - v0.13.10 -->
+    <PackageReference Include="BenchmarkDotNet" Version="0.13.10" />
+  </ItemGroup>
+
+  <!-- Test Files Organization -->
+  <ItemGroup>
+    <Compile Include="Services/AwsKmsServiceTests.cs" />
+    <Compile Include="Services/EncryptionServiceTests.cs" />
+    <Compile Include="Services/KeyRotationServiceTests.cs" />
+    <Compile Include="Services/RedisCacheServiceTests.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="Repositories/UserKeyRepositoryTests.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="Benchmarks/EncryptionBenchmarks.cs" />
+  </ItemGroup>
+
+</Project>
