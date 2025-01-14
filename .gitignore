@@ -1,0 +1,120 @@
+**/bin/
+**/obj/
+**/publish/
+
+# Development tools and IDE files
+.vs/
+.vscode/
+*.user
+*.suo
+*.DotSettings
+*.DotSettings.user
+.idea/
+_ReSharper*/
+
+# Test artifacts
+**/TestResults/
+*.trx
+*.coverage
+*.coveragexml
+*.testlog
+*.vsix
+
+# Sensitive configuration files
+appsettings.*.json
+!appsettings.template.json
+.env
+.env.*
+*.key
+*.pfx
+*.pem
+*.cer
+*.p12
+*.crt
+*.der
+
+# Infrastructure and deployment
+**/terraform.tfstate
+**/terraform.tfstate.backup
+**/.terraform/
+*.tfvars
+!example.tfvars
+kubeconfig
+*.tfplan
+
+# Package management
+**/packages/
+**/node_modules/
+*.nupkg
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Docker
+**/.docker/
+.dockerignore
+*.dockerignore
+
+# Logs and diagnostics
+*.log
+logs/
+Log/
+diagnostics/
+*.dump
+*.dmp
+*.trace
+
+# Temporary files
+[Tt]emp/
+*.tmp
+*.swp
+*~
+._*
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+msbuild.log
+msbuild.err
+msbuild.wrn
+
+# Visual Studio files
+*.VisualState.xml
+TestResult.xml
+nunit-*.xml
+.vs/
+*.dbmdl
+*.dbproj.schemaview
+*.jfm
+*.pfx
+*.publishsettings
+
+# Code analysis
+.sonarqube/
+.scannerwork/
+*.CodeAnalysisLog.xml
+
+# AWS
+aws-lambda-tools-defaults.json
+*.aws-sam/
+
+# Misc
+*.bak
+*.cache
+*.orig
