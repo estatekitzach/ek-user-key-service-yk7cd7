@@ -1,0 +1,46 @@
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: estatekit-api-hpa
+  namespace: estatekit-api
+  labels:
+    app: estatekit-api
+    component: autoscaler
+
+spec:
+  # Reference to the deployment to be scaled
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: estatekit-api
+
+  # Scaling configuration
+  minReplicas: 3  # Minimum replicas for high availability
+  maxReplicas: 10 # Maximum replicas to handle peak load
+
+  # Metrics used for scaling decisions
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70  # Target CPU utilization percentage
+
+  # Scaling behavior configuration
+  behavior:
+    # Scale up behavior
+    scaleUp:
+      stabilizationWindowSeconds: 60  # Wait 60s before scaling up again
+      policies:
+        - type: Pods
+          value: 2  # Add up to 2 pods at a time
+          periodSeconds: 60  # Every 60 seconds
+
+    # Scale down behavior
+    scaleDown:
+      stabilizationWindowSeconds: 300  # Wait 5 minutes before scaling down
+      policies:
+        - type: Pods
+          value: 1  # Remove 1 pod at a time
+          periodSeconds: 120  # Every 2 minutes
