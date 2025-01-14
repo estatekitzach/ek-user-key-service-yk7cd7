@@ -1,0 +1,92 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <!-- Core Settings -->
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>12.0</LangVersion>
+    <IsPackable>true</IsPackable>
+    
+    <!-- Assembly Information -->
+    <AssemblyName>EstateKit.Api.Tests</AssemblyName>
+    <RootNamespace>EstateKit.Api.Tests</RootNamespace>
+    <Description>Test suite for EstateKit Personal Information API</Description>
+    
+    <!-- Code Coverage Settings -->
+    <CollectCoverage>true</CollectCoverage>
+    <CoverletOutputFormat>cobertura</CoverletOutputFormat>
+    <CoverletOutput>./TestResults/</CoverletOutput>
+    <Threshold>80</Threshold>
+  </PropertyGroup>
+
+  <!-- Debug Configuration -->
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>portable</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <Optimize>false</Optimize>
+    <CollectCoverage>true</CollectCoverage>
+    <CoverletOutputFormat>cobertura</CoverletOutputFormat>
+    <ExcludeByFile>**/*.Designer.cs</ExcludeByFile>
+  </PropertyGroup>
+
+  <!-- Release Configuration -->
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+    <Optimize>true</Optimize>
+  </PropertyGroup>
+
+  <!-- Project References -->
+  <ItemGroup>
+    <ProjectReference Include="../../src/EstateKit.Api/EstateKit.Api.csproj" />
+    <ProjectReference Include="../../src/EstateKit.Core/EstateKit.Core.csproj" />
+  </ItemGroup>
+
+  <!-- Package References -->
+  <ItemGroup>
+    <!-- Testing Framework - v17.8.0 -->
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
+    <PackageReference Include="xunit" Version="2.7.0" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.5.0">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    
+    <!-- Testing Tools - v4.20.0 -->
+    <PackageReference Include="Moq" Version="4.20.0" />
+    <PackageReference Include="FluentAssertions" Version="7.0.0" />
+    
+    <!-- ASP.NET Core Testing - v9.0.0 -->
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="9.0.0" />
+    
+    <!-- Code Coverage - v6.0.0 -->
+    <PackageReference Include="coverlet.collector" Version="6.0.0">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    
+    <!-- Configuration - v9.0.0 -->
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.0" />
+    
+    <!-- AWS Integration - v3.7.300.1 -->
+    <PackageReference Include="AWSSDK.KeyManagementService" Version="3.7.300.1" />
+  </ItemGroup>
+
+  <!-- Test Files -->
+  <ItemGroup>
+    <Compile Include="Controllers/DecryptControllerTests.cs" />
+    <Compile Include="Controllers/EncryptControllerTests.cs" />
+    <Compile Include="Controllers/KeyControllerTests.cs" />
+    <Compile Include="Controllers/RotateControllerTests.cs" />
+    <Compile Include="Integration/ApiPerformanceTests.cs" />
+    <Compile Include="Integration/SecurityTests.cs" />
+  </ItemGroup>
+
+  <!-- Configuration Files -->
+  <ItemGroup>
+    <None Include="appsettings.json" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="xunit.runner.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+</Project>
