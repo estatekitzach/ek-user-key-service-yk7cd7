@@ -1,0 +1,68 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: estatekit-api-config
+  labels:
+    app: estatekit-api
+    component: api
+    environment: production
+data:
+  # Application Environment
+  ASPNETCORE_ENVIRONMENT: "Production"
+  
+  # AWS Regional Configuration
+  AWS__Region: "us-east-1"
+  
+  # AWS KMS Configuration
+  AWS__KMS__Region: "us-east-1"
+  AWS__KMS__UseIamRole: "true"
+  AWS__KMS__RequestTimeout: "30"
+  AWS__KMS__Endpoint: "https://kms.us-east-1.amazonaws.com"
+  
+  # AWS Cognito Configuration
+  AWS__Cognito__Region: "us-east-1"
+  AWS__Cognito__Endpoint: "https://cognito-idp.us-east-1.amazonaws.com"
+  
+  # Redis Cache Configuration
+  Cache__Provider: "Redis"
+  Cache__ConnectionString: "estatekit-prod.xyz.cache.amazonaws.com:6379,ssl=true,abortConnect=false"
+  Cache__InstanceName: "EstateKit_Prod"
+  Cache__DefaultTTLMinutes: "15"
+  Cache__EnableCompression: "true"
+  Cache__RetryCount: "3"
+  
+  # Database Configuration
+  Database__EnableSensitiveDataLogging: "false"
+  Database__EnableDetailedErrors: "false"
+  Database__MaxRetryCount: "3"
+  Database__MaxRetryDelaySeconds: "30"
+  Database__EnableSSL: "true"
+  Database__CommandTimeout: "30"
+  
+  # Key Rotation Settings
+  KeyRotation__EnableAutomaticRotation: "true"
+  KeyRotation__RegularRotationIntervalDays: "90"
+  KeyRotation__ComplianceRotationIntervalDays: "365"
+  KeyRotation__MaxRetryAttempts: "3"
+  KeyRotation__RetryDelay: "00:00:30"
+  KeyRotation__RotationLockTimeout: "00:15:00"
+  KeyRotation__RequireAuditLogging: "true"
+  
+  # Logging Configuration
+  Logging__MinimumLevel__Default: "Information"
+  Logging__MinimumLevel__Override__Microsoft: "Warning"
+  Logging__MinimumLevel__Override__System: "Warning"
+  Logging__WriteTo__0__Name: "CloudWatch"
+  Logging__WriteTo__0__Args__logGroup: "EstateKit-Production"
+  Logging__WriteTo__0__Args__logStreamPrefix: "API-"
+  Logging__Properties__Environment: "Production"
+  Logging__Properties__Application: "EstateKit.Api"
+  
+  # API Information
+  API__Version: "1.0.0"
+  API__Title: "EstateKit Personal Information API"
+  
+  # Monitoring Configuration
+  Metrics__Enabled: "true"
+  Tracing__Enabled: "true"
+  HealthCheck__Enabled: "true"
