@@ -1,0 +1,109 @@
+.git
+.gitignore
+
+# IDE and Editor Files
+.vs
+.vscode
+.idea
+**/*.user
+*.DotSettings
+*.sln.DotSettings
+.toolstarget
+
+# Build Output
+**/bin/
+**/obj/
+**/TestResults/
+**/*.trx
+**/*.coverage
+
+# Test Projects and Results
+**/test/
+**/*.Tests/
+**/*Tests.csproj
+**/[Tt]est[Rr]esults/
+**/*.vspscc
+
+# Development Configuration
+**/Properties/launchSettings.json
+**/*.Development.json
+**/*.log
+.env.*
+
+# Docker Files
+docker-compose*.yml
+Dockerfile
+
+# Documentation
+README.md
+
+# Security-Sensitive Files
+**/*.key
+**/*.pfx
+**/*.pem
+**/secrets/
+**/*.jks
+**/*.p12
+**/*password*
+**/*secret*
+
+# Development Environment Files
+**/.toolstarget
+**/.idea
+
+# Visual Studio Files
+**/*.user
+**/*.vspscc
+**/*.DotSettings
+**/*.sln.DotSettings
+
+# Logs and Temporary Files
+**/*.log
+**/[Tt]emp/
+**/[Tt]mp/
+
+# Certificate Files
+**/*.pfx
+**/*.key
+**/*.pem
+**/*.p12
+**/*.jks
+
+# Environment Configuration
+.env
+.env.*
+**/*.Development.json
+**/*.Local.json
+**/*.Production.json
+
+# Package Manager
+**/packages/
+**/node_modules/
+
+# Build and Test Artifacts
+**/[Bb]uild/
+**/[Dd]ebug/
+**/[Rr]elease/
+**/x64/
+**/x86/
+**/[Aa]rtifacts/
+**/coverage/
+**/TestResults/
+**/*.coverage
+**/*.coveragexml
+
+# ReSharper
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+
+# Visual Studio Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# Operating System Files
+.DS_Store
+Thumbs.db
