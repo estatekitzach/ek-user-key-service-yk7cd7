@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: estatekit-api-config
+  labels:
+    app: estatekit-api
+    component: api
+data:
+  # ASP.NET Core Configuration
+  ASPNETCORE_ENVIRONMENT: ${ENVIRONMENT}
+
+  # AWS KMS Configuration
+  AWS__KMS__Region: ${AWS_REGION}
+  AWS__KMS__KeyRotationEnabled: "true"
+
+  # AWS Cognito Configuration  
+  AWS__Cognito__Region: ${AWS_REGION}
+
+  # Redis Cache Configuration
+  Cache__Provider: "Redis"
+  Cache__DefaultTTLMinutes: "15"
+
+  # Database Configuration
+  Database__EnableSensitiveDataLogging: "false"
+  Database__MaxRetryCount: "3"
+  Database__MaxRetryDelaySeconds: "30"
+  Database__EnableSSL: "true"
+
+  # Key Rotation Settings
+  KeyRotation__EnableAutomaticRotation: "true"
+  KeyRotation__RegularRotationIntervalDays: "90"
+  KeyRotation__MaxRetryAttempts: "3"
+
+  # Logging Configuration
+  Logging__LogLevel__Default: "Information"
+  Logging__Console__IncludeScopes: "true"
+
+  # API Information
+  API__Version: "1.0.0"
+  API__Title: "EstateKit Personal Information API"
+
+  # Observability Settings
+  Metrics__Enabled: "true"
+  Tracing__Enabled: "true"
+  HealthCheck__Enabled: "true"
