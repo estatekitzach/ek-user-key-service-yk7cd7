@@ -1,0 +1,73 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+# Production namespace configuration
+namespace: estatekit-production
+namePrefix: prod-
+
+# Common labels for all resources
+commonLabels:
+  environment: production
+  region: us-east-1
+  app: estatekit-api
+  tier: backend
+  managed-by: kustomize
+
+# Common annotations for all resources
+commonAnnotations:
+  maintainer: estatekit-team
+  environment: production
+  region: us-east-1
+  prometheus.io/scrape: "true"
+  prometheus.io/port: "8080"
+  prometheus.io/path: "/metrics"
+
+# Base resources and production-specific configurations
+resources:
+  - ../../base
+  - pdb.yaml
+  - hpa.yaml
+
+# Production-specific patches
+patches:
+  - path: configmap.yaml
+    target:
+      kind: ConfigMap
+      name: estatekit-api-config
+  - path: deployment-patch.yaml
+    target:
+      kind: ConfigMap
+      name: estatekit-api
+
+# Production replica configuration
+replicas:
+  - name: estatekit-api
+    count: 3
+
+# Container image configuration
+images:
+  - name: estatekit-api
+    newName: ${DOCKER_REGISTRY}/estatekit-api
+    newTag: ${IMAGE_TAG}
+
+# ConfigMap generation for production environment
+configMapGenerator:
+  - name: estatekit-api-config
+    behavior: merge
+    envs:
+      - production.env
+    files:
+      - logging.yaml
+      - monitoring.yaml
+
+# Secret generation for production environment
+secretGenerator:
+  - name: estatekit-api-secrets
+    envs:
+      - production-secrets.env
+
+# Strategic merge patches for production customization
+patchesStrategicMerge:
+  - resource-limits.yaml
+  - pod-disruption-budget.yaml
+  - pod-anti-affinity.yaml
