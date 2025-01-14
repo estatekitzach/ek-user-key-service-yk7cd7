@@ -1,0 +1,89 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <!-- Core Settings -->
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>12.0</LangVersion>
+    
+    <!-- Build Configuration -->
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    
+    <!-- Assembly Information -->
+    <AssemblyName>EstateKit.Infrastructure</AssemblyName>
+    <RootNamespace>EstateKit.Infrastructure</RootNamespace>
+    <Description>Infrastructure implementations for EstateKit Personal Information API including data access, caching, and AWS service integrations</Description>
+    <Company>EstateKit</Company>
+    <Product>EstateKit Personal Information API</Product>
+    <Copyright>© 2024 EstateKit. All rights reserved.</Copyright>
+    <Version>1.0.0</Version>
+  </PropertyGroup>
+
+  <!-- Debug Configuration -->
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>portable</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+
+  <!-- Release Configuration -->
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+    <Optimize>true</Optimize>
+  </PropertyGroup>
+
+  <!-- Project References -->
+  <ItemGroup>
+    <ProjectReference Include="..\EstateKit.Core\EstateKit.Core.csproj" />
+  </ItemGroup>
+
+  <!-- Package References -->
+  <ItemGroup>
+    <!-- Entity Framework Core - v9.0.0 -->
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.0" />
+    
+    <!-- AWS SDK - v3.0.0 -->
+    <PackageReference Include="AWSSDK.KMS" Version="3.0.0" />
+    
+    <!-- Redis Cache - v2.7.10 -->
+    <PackageReference Include="StackExchange.Redis" Version="2.7.10" />
+    
+    <!-- Resilience - v8.0.0 -->
+    <PackageReference Include="Polly" Version="8.0.0" />
+  </ItemGroup>
+
+  <!-- Service Implementations -->
+  <ItemGroup>
+    <Compile Include="Services\AwsKmsService.cs" />
+    <Compile Include="Services\EncryptionService.cs" />
+    <Compile Include="Services\KeyRotationService.cs" />
+  </ItemGroup>
+
+  <!-- Data Access Layer -->
+  <ItemGroup>
+    <Compile Include="Data\ApplicationDbContext.cs" />
+    <Compile Include="Data\Configurations\UserKeyConfiguration.cs" />
+    <Compile Include="Data\Configurations\UserKeyHistoryConfiguration.cs" />
+    <Compile Include="Data\Repositories\UserKeyRepository.cs" />
+  </ItemGroup>
+
+  <!-- Caching Layer -->
+  <ItemGroup>
+    <Compile Include="Caching\RedisCacheService.cs" />
+  </ItemGroup>
+
+  <!-- Extensions -->
+  <ItemGroup>
+    <Compile Include="Extensions\ServiceCollectionExtensions.cs" />
+    <Compile Include="Extensions\DbContextOptionsBuilderExtensions.cs" />
+  </ItemGroup>
+
+</Project>
