@@ -1,0 +1,176 @@
+name: Continuous Deployment
+
+on:
+  workflow_run:
+    workflows: ["CI"]
+    types:
+      - completed
+    branches: 
+      - main
+      - develop
+  workflow_dispatch:
+    inputs:
+      environment:
+        type: choice
+        description: 'Deployment Environment'
+        required: true
+        options:
+          - development
+          - staging
+          - production
+      version:
+        type: string
+        description: 'Version to deploy'
+        required: true
+
+env:
+  AWS_REGION: us-east-1
+  ECR_REPOSITORY: estatekit-api
+  EKS_CLUSTER_NAME: estatekit-cluster
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy_development:
+    if: github.ref == 'refs/heads/develop' || github.event.inputs.environment == 'development'
+    name: Deploy to Development
+    environment: development
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/github-actions-development
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v2
+        id: ecr-login
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: src/backend/Dockerfile
+          push: true
+          tags: ${{ steps.ecr-login.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ github.sha }}
+          build-args: |
+            ENVIRONMENT=development
+          cache-from: type=registry,ref=${{ steps.ecr-login.outputs.registry }}/${{ env.ECR_REPOSITORY }}:buildcache
+          cache-to: type=registry,ref=${{ steps.ecr-login.outputs.registry }}/${{ env.ECR_REPOSITORY }}:buildcache,mode=max
+          scan: true
+
+      - name: Set up Kubernetes context
+        uses: azure/k8s-set-context@v3
+        with:
+          method: aws
+          cluster-name: ${{ env.EKS_CLUSTER_NAME }}
+          cluster-region: ${{ env.AWS_REGION }}
+
+      - name: Deploy to development
+        uses: azure/k8s-deploy@v4
+        with:
+          namespace: development
+          manifests: |
+            infrastructure/kubernetes/base/deployment.yaml
+            infrastructure/kubernetes/overlays/development/
+          images: |
+            ${{ steps.ecr-login.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ github.sha }}
+          strategy: rolling
+          rollback-on-failure: true
+          timeout: 5m
+
+  deploy_staging:
+    if: github.ref == 'refs/heads/main' || github.event.inputs.environment == 'staging'
+    name: Deploy to Staging
+    needs: deploy_development
+    environment: staging
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/github-actions-staging
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v2
+        id: ecr-login
+
+      - name: Set up Kubernetes context
+        uses: azure/k8s-set-context@v3
+        with:
+          method: aws
+          cluster-name: ${{ env.EKS_CLUSTER_NAME }}
+          cluster-region: ${{ env.AWS_REGION }}
+
+      - name: Deploy to staging
+        uses: azure/k8s-deploy@v4
+        with:
+          namespace: staging
+          manifests: |
+            infrastructure/kubernetes/base/deployment.yaml
+            infrastructure/kubernetes/overlays/staging/
+          images: |
+            ${{ steps.ecr-login.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ github.sha }}
+          strategy: blue-green
+          traffic-split-method: pod
+          rollback-on-failure: true
+          timeout: 10m
+
+  deploy_production:
+    if: github.ref == 'refs/heads/main' || github.event.inputs.environment == 'production'
+    name: Deploy to Production
+    needs: deploy_staging
+    environment: 
+      name: production
+      url: https://api.estatekit.com
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/github-actions-production
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v2
+        id: ecr-login
+
+      - name: Set up Kubernetes context
+        uses: azure/k8s-set-context@v3
+        with:
+          method: aws
+          cluster-name: ${{ env.EKS_CLUSTER_NAME }}
+          cluster-region: ${{ env.AWS_REGION }}
+
+      - name: Deploy to production
+        uses: azure/k8s-deploy@v4
+        with:
+          namespace: production
+          manifests: |
+            infrastructure/kubernetes/base/deployment.yaml
+            infrastructure/kubernetes/overlays/production/
+          images: |
+            ${{ steps.ecr-login.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ github.sha }}
+          strategy: canary
+          percentage: 10
+          increment-interval: 1m
+          baseline-and-canary-replicas: 3
+          rollback-on-failure: true
+          timeout: 15m
+          success-threshold: |
+            http-status=200
+            response-time=3000
+            error-rate=1
